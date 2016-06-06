@@ -96,6 +96,7 @@ BoundingBox::~BoundingBox()
 
 bool BoundingBox::checkCollision(BoundingBox *bb)
 {
+    
     // Check overlay in x-axis
     bool collisionX = (this->max.x >= bb->min.x) && (bb->max.x >= this->min.x);
     
@@ -108,13 +109,6 @@ bool BoundingBox::checkCollision(BoundingBox *bb)
     return collisionX && collisionY && collisionZ;
 }
 
-
-void BoundingBox::doCollision()
-{
-    
-}
-
-
 void BoundingBox::draw(GLuint shaderProgram)
 {
     this->toWorld = this->object->toWorld * transform;
@@ -123,6 +117,8 @@ void BoundingBox::draw(GLuint shaderProgram)
     
     GLuint MatrixID = glGetUniformLocation(shaderProgram, "MVP");
     glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+    
+    glUniform1i(glGetUniformLocation(shaderProgram, "collided"), collided);
     
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -144,8 +140,7 @@ void BoundingBox::draw(GLuint shaderProgram)
 
 void BoundingBox::update()
 {
-    /*glm::vec3 temp = glm::vec3(this->object->toWorld * glm::vec4(this->object->vertices[0], 1.0f));
-
+    glm::vec3 temp = glm::vec3(this->object->toWorld * glm::vec4(this->object->vertices[0], 1.0f));
     this->min.x = temp.x;
     this->max.x = temp.x;
     this->min.y = temp.y;
@@ -169,8 +164,5 @@ void BoundingBox::update()
             this->min.z = temp.z;
         if (temp.z > this->max.z)
             this->max.z = temp.z;
-    }*/
-    
-    this->min = glm::vec3(this->toWorld * glm::vec4(this->min, 0.0f));
-    this->max = glm::vec3(this->toWorld * glm::vec4(this->max, 0.0f));
+    }
 }

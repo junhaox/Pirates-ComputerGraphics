@@ -247,7 +247,7 @@ void Window::idle_callback()
         // give it a little push
         displacement2 += 0.1;
         
-        velocity2 = sqrt( 0.0001 * displacement2 );
+        velocity2 = sqrt( 0.001 * displacement2 );
         
         timePassed2 += velocity2;
         
@@ -264,7 +264,7 @@ void Window::idle_callback()
         transMatrix2[3] = glm::vec4( nextBoatLocation2 - lastBoatLocation2, 1.0f);
         
         boat2->toWorld = transMatrix2;
-        boat2->moveTo(-nextBoatLocation2);
+        boat2->moveTo(nextBoatLocation2);
         lastBoatLocation2 = nextBoatLocation2;
     }
     
