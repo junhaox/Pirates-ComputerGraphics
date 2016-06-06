@@ -9,8 +9,10 @@ int Window::height;
 GLint shaderProgram;
 GLint skyboxShader;
 GLint trackShader;
+GLint boxShader;
 
 const int NUM_CP = 24;
+bool stop = true;
 
 //========================[ Objects ]==========================//
 Cube * skyBox;
@@ -21,6 +23,8 @@ ControlPoint * cp[NUM_CP];
 ControlPoint * cp2[NUM_CP];
 BezierCurve * bc1;
 BezierCurve * bc2;
+BoundingBox * bb1;
+BoundingBox * bb2;
 //===============[ Default camera parameters ]================//
 glm::vec3 eye_pos;
 glm::vec3 look_dir;
@@ -61,12 +65,15 @@ glm::vec3 nextBoatLocation;                   // new location of the pod on the 
 glm::vec3 lastBoatLocation2;                  // old location of the pod on the track
 glm::vec3 nextBoatLocation2;                   // new location of the pod on the track
 
+
 void Window::initialize_objects()
 {
     skyBox = new Cube();
     skyBox->scale(20);
     boat = new OBJObject(("wS free terrain 018/boat.obj"));
     boat2 = new OBJObject(("wS free terrain 018/boat.obj"));
+    bb1 = new BoundingBox(boat);
+    bb2 = new BoundingBox(boat2);
 
     island = new OBJObject("wS free terrain 018/WS free terrain 018.obj");
     
@@ -95,6 +102,7 @@ void Window::initialize_objects()
     shaderProgram = LoadShaders("shader.vert", "shader.frag");
     skyboxShader = LoadShaders("skyShader.vert", "skyShader.frag");
     trackShader = LoadShaders("track.vert", "track.frag");
+    boxShader = LoadShaders("boxShader.vert", "boxShader.frag");
 }
 
 void Window::clean_up()
@@ -105,6 +113,8 @@ void Window::clean_up()
     delete(island);
     delete(bc1);
     delete(bc2);
+    delete(bb1);
+    delete(bb2);
     for(int i =0; i < NUM_CP; i++) {
         delete(cp[i]);
         delete(cp2[i]);
@@ -113,6 +123,7 @@ void Window::clean_up()
 	glDeleteProgram(shaderProgram);
     glDeleteProgram(skyboxShader);
     glDeleteProgram(trackShader);
+    glDeleteProgram(boxShader);
 }
 
 GLFWwindow* Window::create_window(int width, int height)
@@ -195,58 +206,60 @@ void Window::idle_callback()
         }
     }
     
-    // ******** Boat 1 movement ******** //
-    float displacement = bc1->getTallest().y - nextBoatLocation.y;
-    if ( displacement < 0 ) displacement *= -0.5;
-    // give it a little push
-    displacement += 0.1;
-    
-    velocity = sqrt( 0.00001 * displacement );
-    
-    timePassed += velocity;
-    
-    nextBoatLocation = moveBoat(velocity);
-    
-    glm::vec3 z_axis = glm::normalize( nextBoatLocation - lastBoatLocation );
-    glm::vec3 x_axis = glm::normalize( glm::cross( glm::vec3 (0, 1, 0), z_axis) );
-    glm::vec3 y_axis = glm::normalize( glm::cross(z_axis, x_axis)  );
-    
-    glm::mat4 transMatrix(1.0f);
-    transMatrix[0] = glm::vec4( x_axis, 0.0f);
-    transMatrix[1] = glm::vec4( y_axis, 0.0f);
-    transMatrix[2] = glm::vec4( z_axis, 0.0f);
-    transMatrix[3] = glm::vec4( nextBoatLocation - lastBoatLocation, 1.0f);
-    
-    boat->toWorld = transMatrix;
-    boat->moveTo(nextBoatLocation);
-    lastBoatLocation = nextBoatLocation;
-
-    
-    // ******** Boat 2 movement ******** //
-    float displacement2 = bc2->getTallest().y - nextBoatLocation2.y;
-    if ( displacement2 < 0 ) displacement2 *= -0.5;
-    // give it a little push
-    displacement2 += 0.1;
-    
-    velocity2 = sqrt( 0.0001 * displacement2 );
-    
-    timePassed2 += velocity2;
-    
-    nextBoatLocation2 = moveBoat2(velocity2);
-    
-    glm::vec3 z_axis2 = glm::normalize( nextBoatLocation2 - lastBoatLocation2 );
-    glm::vec3 x_axis2 = glm::normalize( glm::cross( glm::vec3 (0, 1, 0), z_axis2) );
-    glm::vec3 y_axis2 = glm::normalize( glm::cross(z_axis2, x_axis2)  );
-    
-    glm::mat4 transMatrix2(1.0f);
-    transMatrix2[0] = glm::vec4( x_axis2, 0.0f);
-    transMatrix2[1] = glm::vec4( y_axis2, 0.0f);
-    transMatrix2[2] = glm::vec4( z_axis2, 0.0f);
-    transMatrix2[3] = glm::vec4( nextBoatLocation2 - lastBoatLocation2, 1.0f);
-    
-    boat2->toWorld = transMatrix2;
-    boat2->moveTo(nextBoatLocation2);
-    lastBoatLocation2 = nextBoatLocation2;
+    if (!stop) {
+        // ******** Boat 1 movement ******** //
+        float displacement = bc1->getTallest().y - nextBoatLocation.y;
+        if ( displacement < 0 ) displacement *= -0.5;
+        // give it a little push
+        displacement += 0.1;
+        
+        velocity = sqrt( 0.00001 * displacement );
+        
+        timePassed += velocity;
+        
+        nextBoatLocation = moveBoat(velocity);
+        
+        glm::vec3 z_axis = glm::normalize( nextBoatLocation - lastBoatLocation );
+        glm::vec3 x_axis = glm::normalize( glm::cross( glm::vec3 (0, 1, 0), z_axis) );
+        glm::vec3 y_axis = glm::normalize( glm::cross(z_axis, x_axis)  );
+        
+        glm::mat4 transMatrix(1.0f);
+        transMatrix[0] = glm::vec4( x_axis, 0.0f);
+        transMatrix[1] = glm::vec4( y_axis, 0.0f);
+        transMatrix[2] = glm::vec4( z_axis, 0.0f);
+        transMatrix[3] = glm::vec4( nextBoatLocation - lastBoatLocation, 1.0f);
+        
+        boat->toWorld = transMatrix;
+        boat->moveTo(nextBoatLocation);
+        lastBoatLocation = nextBoatLocation;
+        
+        
+        // ******** Boat 2 movement ******** //
+        float displacement2 = bc2->getTallest().y - nextBoatLocation2.y;
+        if ( displacement2 < 0 ) displacement2 *= -0.5;
+        // give it a little push
+        displacement2 += 0.1;
+        
+        velocity2 = sqrt( 0.0001 * displacement2 );
+        
+        timePassed2 += velocity2;
+        
+        nextBoatLocation2 = moveBoat2(velocity2);
+        
+        glm::vec3 z_axis2 = glm::normalize( nextBoatLocation2 - lastBoatLocation2 );
+        glm::vec3 x_axis2 = glm::normalize( glm::cross( glm::vec3 (0, 1, 0), z_axis2) );
+        glm::vec3 y_axis2 = glm::normalize( glm::cross(z_axis2, x_axis2)  );
+        
+        glm::mat4 transMatrix2(1.0f);
+        transMatrix2[0] = glm::vec4( x_axis2, 0.0f);
+        transMatrix2[1] = glm::vec4( y_axis2, 0.0f);
+        transMatrix2[2] = glm::vec4( z_axis2, 0.0f);
+        transMatrix2[3] = glm::vec4( nextBoatLocation2 - lastBoatLocation2, 1.0f);
+        
+        boat2->toWorld = transMatrix2;
+        boat2->moveTo(nextBoatLocation2);
+        lastBoatLocation2 = nextBoatLocation2;
+    }
     
     lastPoint = curPoint;
 }
@@ -287,6 +300,10 @@ void Window::display_callback(GLFWwindow* window)
     boat->draw(shaderProgram);
     boat2->draw(shaderProgram);
     
+    glUseProgram(boxShader);
+    bb1->draw(boxShader);
+    bb2->draw(boxShader);
+    
 
 	// Gets events, including input such as keyboard and mouse or window resizing
 	glfwPollEvents();
@@ -299,6 +316,13 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
 	if ( action == GLFW_PRESS || action == GLFW_REPEAT ) {
         if (key == GLFW_KEY_ESCAPE)
             glfwSetWindowShouldClose(window, GL_TRUE);
+        
+        if (key == GLFW_KEY_S) {
+            if (stop == true)
+                stop = false;
+            else
+                stop = true;
+        }
     }
 }
 

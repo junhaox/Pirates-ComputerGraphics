@@ -16,16 +16,21 @@
 #include <glm/gtx/transform.hpp>
 #include <vector>
 #include "OBJObject.h"
+#include "Window.h"
 
 class BoundingBox
 {
 public:
-    BoundingBox(GLfloat minX, GLfloat maxX, GLfloat minY, GLfloat maxY, GLfloat minZ, GLfloat maxZ, OBJObject *obj);
+    BoundingBox(OBJObject *obj);
     BoundingBox();
     ~BoundingBox();
     
+    GLuint VAO,VBO,EBO;
     glm::mat4 toWorld;
     glm::vec3 min, max;
+    glm::vec3 size;
+    glm::vec3 center;
+    glm::mat4 transform;
     OBJObject *object;
     bool collided;
     

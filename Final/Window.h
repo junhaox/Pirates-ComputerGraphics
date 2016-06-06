@@ -16,6 +16,7 @@
 #include "Cube.h"
 #include "shader.h"
 #include "OBJObject.h"
+#include "BoundingBox.h"
 
 
 using namespace std;

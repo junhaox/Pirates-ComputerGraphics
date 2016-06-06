@@ -60,6 +60,8 @@
 		203BF3411D04ED7E00E07E6F /* libirrklang.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libirrklang.dylib; path = "../../../../../../Developer/irrKlang-64bit-1.5.0/bin/macosx-gcc/libirrklang.dylib"; sourceTree = "<group>"; };
 		203BF3431D04F9BF00E07E6F /* BoundingBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoundingBox.cpp; sourceTree = "<group>"; };
 		203BF3451D04F9D100E07E6F /* BoundingBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoundingBox.h; sourceTree = "<group>"; };
+		207146FA1D05600B005F8095 /* boxShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = boxShader.frag; sourceTree = "<group>"; };
+		207146FB1D05600B005F8095 /* boxShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = boxShader.vert; sourceTree = "<group>"; };
 		20B8D8601D04D7B600B2C8AE /* BezierCurve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BezierCurve.cpp; sourceTree = "<group>"; };
 		20B8D8611D04D7B600B2C8AE /* BezierCurve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BezierCurve.h; sourceTree = "<group>"; };
 		20B8D8621D04D7B600B2C8AE /* ControlPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ControlPoint.cpp; sourceTree = "<group>"; };
@@ -130,6 +132,8 @@
 				20B8D8611D04D7B600B2C8AE /* BezierCurve.h */,
 				20B8D8621D04D7B600B2C8AE /* ControlPoint.cpp */,
 				20B8D8631D04D7B600B2C8AE /* ControlPoint.h */,
+				207146FA1D05600B005F8095 /* boxShader.frag */,
+				207146FB1D05600B005F8095 /* boxShader.vert */,
 				20B8D86D1D04D7B600B2C8AE /* track.frag */,
 				20B8D86E1D04D7B600B2C8AE /* track.vert */,
 				200F781C1CF8EF720042F780 /* shader.cpp */,
