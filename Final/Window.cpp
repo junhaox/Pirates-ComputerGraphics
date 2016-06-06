@@ -19,6 +19,7 @@ Cube * skyBox;
 OBJObject * boat;
 OBJObject * boat2;
 OBJObject * island;
+OBJObject * ocean;
 ControlPoint * cp[NUM_CP];
 ControlPoint * cp2[NUM_CP];
 BezierCurve * bc1;
@@ -76,9 +77,11 @@ void Window::initialize_objects()
     bb2 = new BoundingBox(boat2);
 
     island = new OBJObject("wS free terrain 018/WS free terrain 018.obj");
+    ocean = new OBJObject("wS free terrain 018/Ocean obj/Ocean.obj");
     
     bc1 = new BezierCurve(cp, NUM_CP);
     bc2 = new BezierCurve(cp2, NUM_CP);
+    
     
     /*SoundEngine = createIrrKlangDevice();
     SoundEngine->play2D("bell.wav", GL_TRUE);
@@ -86,10 +89,12 @@ void Window::initialize_objects()
 
     island->scale(100);
     island->translate(0.0f, -70.0f, 0.0f);
+    ocean->scale(200);
+    ocean->translate(0.0f, 1.0f, 0.0f);
     boat->scale(0.6);
-    boat->translate(40.0f, 25.0f, 180.0f);
+    boat->translate(40.0f, 1.0f, 180.0f);
     boat2->scale(0.6);
-    boat2->translate(-80.0f, 5.0f, 200.0f);
+    boat2->translate(-80.0f, 1.0f, 200.0f);
     
     counter = bc1->getCounter();
     timePassed = bc1->getTime();
@@ -111,6 +116,7 @@ void Window::clean_up()
     delete(boat2);
     delete(skyBox);
     delete(island);
+    delete(ocean);
     delete(bc1);
     delete(bc2);
     delete(bb1);
@@ -261,6 +267,18 @@ void Window::idle_callback()
         lastBoatLocation2 = nextBoatLocation2;
     }
     
+    bb1->update();
+    bb2->update();
+    
+    if (bb1->checkCollision(bb2)) {
+        bb1->collided = 1;
+        bb2->collided = 1;
+    }
+    else {
+        bb1->collided = 0;
+        bb2->collided = 0;
+    }
+    
     lastPoint = curPoint;
 }
 
@@ -296,7 +314,7 @@ void Window::display_callback(GLFWwindow* window)
     materialID = glGetUniformLocation(shaderProgram, "dirLight.direction");
     glUniform3fv(materialID, 1, (GLfloat*) &dirLight_dir );
     
-    island->draw(shaderProgram);
+    ocean->draw(shaderProgram);
     boat->draw(shaderProgram);
     boat2->draw(shaderProgram);
     

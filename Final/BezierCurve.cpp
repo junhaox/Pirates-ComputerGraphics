@@ -8,41 +8,82 @@ BezierCurve::BezierCurve( ControlPoint *cp[], int num_cp)
 	this->angle = 0.0f;
     counter = 0;
     timer = 0.0f;
-    cp[0] = new ControlPoint(-1,  0,  -3, 232);
-    cp[1] = new ControlPoint(-4.0f,  0.5f,  -2.5f, 233);
-    cp[2] = new ControlPoint(-5.0f, 3.5f, -3.0f, 234);
+    /*cp[0] = new ControlPoint(0.0, 0.0, 1.0, 232);
+    cp[1] = new ControlPoint(2.0, 0.5, 1.5, 233);
+    cp[2] = new ControlPoint(2.0,0.0,0.6, 234);
     
-    cp[3] = new ControlPoint(-5.0f, 1.0f, -5.0f, 235);
+    cp[3] = new ControlPoint(3.0, 0.0, 0.4, 235);
     glm::vec3 handle = oppositeHandle(cp[3], cp[2]);
     cp[4] = new ControlPoint(handle.x, handle.y, handle.z, 236);
 
-    cp[5] = new ControlPoint(-9, -1, -2, 237);
-    cp[6] = new ControlPoint(-10.5f,  -1.5f,  1.5f, 238);
+    cp[5] = new ControlPoint(5.0,-0.2,0.0, 237);
+    cp[6] = new ControlPoint(6.0,0.0,-0.2, 238);
     handle = oppositeHandle(cp[6], cp[5]);
     cp[7] = new ControlPoint( handle.x, handle.y, handle.z, 239);
 
-    cp[8] = new ControlPoint(-10.0f,  -6.0f,  3.1f,  240);
-    cp[9] = new ControlPoint(-11.0f,  -4.0f,  4.5f,  241 );
+    cp[8] = new ControlPoint(8.0,1.0,-0.6,  240);
+    cp[9] = new ControlPoint(8.0,0.5,-0.8,  241 );
     handle = oppositeHandle(cp[9], cp[8]);
     cp[10] = new ControlPoint( handle.x, handle.y, handle.z,  242 );
     
-    cp[11] = new ControlPoint( -3.5f,  -2.0f,  5.5f, 243 );
-    cp[12] = new ControlPoint( -3.0f, 2.0f,  6.5f, 244 );
+    cp[11] = new ControlPoint( 7.0,-1.0,-1.0, 243 );
+    cp[12] = new ControlPoint( 6.0,-0.5,-1.0, 244 );
     handle = oppositeHandle(cp[12], cp[11]);
     cp[13] = new ControlPoint( handle.x, handle.y, handle.z, 245 );
     
-    cp[14] = new ControlPoint(6.0f,  -5.0f,  4.4f, 246);
-    cp[15] = new ControlPoint(8.0f, -7.2f, 3.6f, 247);
+    cp[14] = new ControlPoint(4.0,1.0,-0.8, 246);
+    cp[15] = new ControlPoint(3.0,1.0,-0.8, 247);
     handle = oppositeHandle(cp[15], cp[14]);
     cp[16] = new ControlPoint( handle.x, handle.y, handle.z,  248 );
     
-    cp[17] = new ControlPoint(9.5f,  -4.5f,  1.0f,  249);
-    cp[18] = new ControlPoint(10.6f,  -2.1f, 0.0f,  250);
+    cp[17] = new ControlPoint(1.0,0.7,-1.2,  249);
+    cp[18] = new ControlPoint(0.0,0.7,-0.8,  250);
     handle = oppositeHandle(cp[18], cp[17]);
     cp[19] = new ControlPoint( handle.x, handle.y, handle.z, 251 );
     
-    cp[20] = new ControlPoint(10.0f,  1.5f,  -2.0f,  252);
-    cp[21] = new ControlPoint(8.5f,  7.4f, -3.7f,  253);
+    cp[20] = new ControlPoint(-2.0,0.5,-0.6,  252);
+    cp[21] = new ControlPoint(-3.0,0.0,-0.4,  253);
+    handle = oppositeHandle(cp[21], cp[20]);
+    cp[22] = new ControlPoint( handle.x, handle.y, handle.z, 254);
+    
+    handle = oppositeHandle(cp[0], cp[1]);
+    cp[23] = new ControlPoint( handle.x, handle.y, handle.z, 255 );*/
+    
+    cp[0] = new ControlPoint(-1*30,  2,  -3*30, 232);
+    cp[1] = new ControlPoint(-4.0f*30,  2,  -2.5f*30, 233);
+    cp[2] = new ControlPoint(-5.0f*30, 2, -3.0f*30, 234);
+    
+    cp[3] = new ControlPoint(-5.0f*30, 2, -5.0f*30, 235);
+    glm::vec3 handle = oppositeHandle(cp[3], cp[2]);
+    cp[4] = new ControlPoint(handle.x, handle.y, handle.z, 236);
+    
+    cp[5] = new ControlPoint(-9*30, 2, -2*30, 237);
+    cp[6] = new ControlPoint(-10.5f*30,  2,  1.5f*30, 238);
+    handle = oppositeHandle(cp[6], cp[5]);
+    cp[7] = new ControlPoint( handle.x, handle.y, handle.z, 239);
+    
+    cp[8] = new ControlPoint(-10.0f*30,  2,  3.1f*30,  240);
+    cp[9] = new ControlPoint(-11.0f*30,  2,  4.5f*30,  241 );
+    handle = oppositeHandle(cp[9], cp[8]);
+    cp[10] = new ControlPoint( handle.x, handle.y, handle.z,  242 );
+    
+    cp[11] = new ControlPoint( -3.5f*30,  2,  5.5f*30, 243 );
+    cp[12] = new ControlPoint( -3.0f*30, 2.0f,  6.5f*30, 244 );
+    handle = oppositeHandle(cp[12], cp[11]);
+    cp[13] = new ControlPoint( handle.x, handle.y, handle.z, 245 );
+    
+    cp[14] = new ControlPoint(6.0f*30,  2,  4.4f*30, 246);
+    cp[15] = new ControlPoint(8.0f*30, 2, 3.6f*30, 247);
+    handle = oppositeHandle(cp[15], cp[14]);
+    cp[16] = new ControlPoint( handle.x, handle.y, handle.z,  248 );
+    
+    cp[17] = new ControlPoint(9.5f*30,  2,  1.0f*30,  249);
+    cp[18] = new ControlPoint(10.6f*30,  2, 0.0f*30,  250);
+    handle = oppositeHandle(cp[18], cp[17]);
+    cp[19] = new ControlPoint( handle.x, handle.y, handle.z, 251 );
+    
+    cp[20] = new ControlPoint(10.0f*30,  2,  -2.0f*30,  252);
+    cp[21] = new ControlPoint(8.5f*30,  2, -3.7f*30,  253);
     handle = oppositeHandle(cp[21], cp[20]);
     cp[22] = new ControlPoint( handle.x, handle.y, handle.z, 254);
     

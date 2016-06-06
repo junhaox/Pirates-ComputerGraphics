@@ -29,6 +29,7 @@ BoundingBox::BoundingBox(OBJObject *obj)
 {
     this->object = obj;
     this->toWorld = glm::mat4(1.0f);
+    this->collided = 0;
     
     // Create buffers/arrays
     glGenVertexArrays(1, &VAO);
@@ -130,7 +131,6 @@ void BoundingBox::draw(GLuint shaderProgram)
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
     
-    
     glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
     glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4*sizeof(GLushort)));
     glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8*sizeof(GLushort)));
@@ -142,8 +142,32 @@ void BoundingBox::draw(GLuint shaderProgram)
 }
 
 
-void BoundingBox::update(glm::mat4 trans)
+void BoundingBox::update()
 {
-    this->min = glm::vec3(trans * glm::vec4(this->min, 1.0f));
-    this->max = glm::vec3(trans * glm::vec4(this->max, 1.0f));
+    glm::vec3 temp = glm::vec3(this->object->toWorld * glm::vec4(this->object->vertices[0], 1.0f));
+
+    this->min.x = temp.x;
+    this->max.x = temp.x;
+    this->min.y = temp.y;
+    this->max.y = temp.y;
+    this->min.z = temp.z;
+    this->max.z = temp.z;
+    
+    for (int i = 0; i < this->object->vertices.size(); i++) {
+        temp = glm::vec3(this->object->toWorld * glm::vec4(this->object->vertices[i], 1.0f));
+        if (temp.x < this->min.x)
+            this->min.x = temp.x;
+        if (temp.x > this->max.x)
+            this->max.x = temp.x;
+        
+        if (temp.y < this->min.y)
+            this->min.y = temp.y;
+        if (temp.y > this->max.y)
+            this->max.y = temp.y;
+        
+        if (temp.z < this->min.z)
+            this->min.z = temp.z;
+        if (temp.z > this->max.z)
+            this->max.z = temp.z;
+    }
 }

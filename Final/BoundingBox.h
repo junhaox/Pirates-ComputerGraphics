@@ -32,12 +32,12 @@ public:
     glm::vec3 center;
     glm::mat4 transform;
     OBJObject *object;
-    bool collided;
+    int collided;
     
     bool checkCollision(BoundingBox *bb);
     void doCollision();
     void draw(GLuint shaderProgram);
-    void update(glm::mat4 matrix);
+    void update();
 };
 
 #endif /* BoundingBox_h */
