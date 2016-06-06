@@ -144,7 +144,7 @@ void BoundingBox::draw(GLuint shaderProgram)
 
 void BoundingBox::update()
 {
-    glm::vec3 temp = glm::vec3(this->object->toWorld * glm::vec4(this->object->vertices[0], 1.0f));
+    /*glm::vec3 temp = glm::vec3(this->object->toWorld * glm::vec4(this->object->vertices[0], 1.0f));
 
     this->min.x = temp.x;
     this->max.x = temp.x;
@@ -169,5 +169,8 @@ void BoundingBox::update()
             this->min.z = temp.z;
         if (temp.z > this->max.z)
             this->max.z = temp.z;
-    }
+    }*/
+    
+    this->min = glm::vec3(this->toWorld * glm::vec4(this->min, 0.0f));
+    this->max = glm::vec3(this->toWorld * glm::vec4(this->max, 0.0f));
 }

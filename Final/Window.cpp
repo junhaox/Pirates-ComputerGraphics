@@ -13,6 +13,7 @@ GLint boxShader;
 
 const int NUM_CP = 24;
 bool stop = true;
+bool drawBox = false;
 
 //========================[ Objects ]==========================//
 Cube * skyBox;
@@ -102,7 +103,7 @@ void Window::initialize_objects()
     timePassed2 = bc2->getTime();
     
     lastBoatLocation = moveBoat(0);
-    lastBoatLocation2 = moveBoat(0);
+    lastBoatLocation2 = moveBoat(4);
     
     shaderProgram = LoadShaders("shader.vert", "shader.frag");
     skyboxShader = LoadShaders("skyShader.vert", "skyShader.frag");
@@ -219,7 +220,7 @@ void Window::idle_callback()
         // give it a little push
         displacement += 0.1;
         
-        velocity = sqrt( 0.00001 * displacement );
+        velocity = sqrt( 0.0005 * displacement );
         
         timePassed += velocity;
         
@@ -263,7 +264,7 @@ void Window::idle_callback()
         transMatrix2[3] = glm::vec4( nextBoatLocation2 - lastBoatLocation2, 1.0f);
         
         boat2->toWorld = transMatrix2;
-        boat2->moveTo(nextBoatLocation2);
+        boat2->moveTo(-nextBoatLocation2);
         lastBoatLocation2 = nextBoatLocation2;
     }
     
@@ -318,9 +319,11 @@ void Window::display_callback(GLFWwindow* window)
     boat->draw(shaderProgram);
     boat2->draw(shaderProgram);
     
-    glUseProgram(boxShader);
-    bb1->draw(boxShader);
-    bb2->draw(boxShader);
+    if (drawBox) {
+        glUseProgram(boxShader);
+        bb1->draw(boxShader);
+        bb2->draw(boxShader);
+    }
     
 
 	// Gets events, including input such as keyboard and mouse or window resizing
@@ -340,6 +343,13 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
                 stop = false;
             else
                 stop = true;
+        }
+        
+        if (key == GLFW_KEY_D) {
+            if (drawBox == true)
+                drawBox = false;
+            else
+                drawBox = true;
         }
     }
 }

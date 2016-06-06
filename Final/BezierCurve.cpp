@@ -8,46 +8,6 @@ BezierCurve::BezierCurve( ControlPoint *cp[], int num_cp)
 	this->angle = 0.0f;
     counter = 0;
     timer = 0.0f;
-    /*cp[0] = new ControlPoint(0.0, 0.0, 1.0, 232);
-    cp[1] = new ControlPoint(2.0, 0.5, 1.5, 233);
-    cp[2] = new ControlPoint(2.0,0.0,0.6, 234);
-    
-    cp[3] = new ControlPoint(3.0, 0.0, 0.4, 235);
-    glm::vec3 handle = oppositeHandle(cp[3], cp[2]);
-    cp[4] = new ControlPoint(handle.x, handle.y, handle.z, 236);
-
-    cp[5] = new ControlPoint(5.0,-0.2,0.0, 237);
-    cp[6] = new ControlPoint(6.0,0.0,-0.2, 238);
-    handle = oppositeHandle(cp[6], cp[5]);
-    cp[7] = new ControlPoint( handle.x, handle.y, handle.z, 239);
-
-    cp[8] = new ControlPoint(8.0,1.0,-0.6,  240);
-    cp[9] = new ControlPoint(8.0,0.5,-0.8,  241 );
-    handle = oppositeHandle(cp[9], cp[8]);
-    cp[10] = new ControlPoint( handle.x, handle.y, handle.z,  242 );
-    
-    cp[11] = new ControlPoint( 7.0,-1.0,-1.0, 243 );
-    cp[12] = new ControlPoint( 6.0,-0.5,-1.0, 244 );
-    handle = oppositeHandle(cp[12], cp[11]);
-    cp[13] = new ControlPoint( handle.x, handle.y, handle.z, 245 );
-    
-    cp[14] = new ControlPoint(4.0,1.0,-0.8, 246);
-    cp[15] = new ControlPoint(3.0,1.0,-0.8, 247);
-    handle = oppositeHandle(cp[15], cp[14]);
-    cp[16] = new ControlPoint( handle.x, handle.y, handle.z,  248 );
-    
-    cp[17] = new ControlPoint(1.0,0.7,-1.2,  249);
-    cp[18] = new ControlPoint(0.0,0.7,-0.8,  250);
-    handle = oppositeHandle(cp[18], cp[17]);
-    cp[19] = new ControlPoint( handle.x, handle.y, handle.z, 251 );
-    
-    cp[20] = new ControlPoint(-2.0,0.5,-0.6,  252);
-    cp[21] = new ControlPoint(-3.0,0.0,-0.4,  253);
-    handle = oppositeHandle(cp[21], cp[20]);
-    cp[22] = new ControlPoint( handle.x, handle.y, handle.z, 254);
-    
-    handle = oppositeHandle(cp[0], cp[1]);
-    cp[23] = new ControlPoint( handle.x, handle.y, handle.z, 255 );*/
     
     cp[0] = new ControlPoint(-1*30,  2,  -3*30, 232);
     cp[1] = new ControlPoint(-4.0f*30,  2,  -2.5f*30, 233);
