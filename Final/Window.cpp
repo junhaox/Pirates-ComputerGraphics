@@ -10,6 +10,7 @@ GLint shaderProgram;
 GLint skyboxShader;
 GLint trackShader;
 GLint boxShader;
+GLint oceanShader;
 
 const int NUM_CP = 24;
 bool stop = true;
@@ -19,7 +20,6 @@ bool drawBox = false;
 Cube * skyBox;
 OBJObject * boat;
 OBJObject * boat2;
-OBJObject * island;
 OBJObject * ocean;
 ControlPoint * cp[NUM_CP];
 ControlPoint * cp2[NUM_CP];
@@ -47,6 +47,12 @@ glm::vec3 matDiff(0.780392, 0.568627, 0.113725);
 glm::vec3 matSpec(0.992157, 0.941176, 0.807843);
 float matShine = 3;
 
+//material color: turquoise
+glm::vec3 matAmb2(0.1, 0.18725, 0.1745);
+glm::vec3 matDiff2(0.396, 0.74151, 0.69102);
+glm::vec3 matSpec2(0.297254, 0.30829, 0.306678);
+float matShine2 = 0.1;
+
 // directional & point light
 glm::vec3 dirAmb(0.8f, 0.8f, 0.8f);
 glm::vec3 dirDiff(0.50f, 0.50f, 0.50f);
@@ -72,13 +78,12 @@ void Window::initialize_objects()
 {
     skyBox = new Cube();
     skyBox->scale(20);
-    boat = new OBJObject(("wS free terrain 018/boat.obj"));
-    boat2 = new OBJObject(("wS free terrain 018/boat.obj"));
+    boat = new OBJObject("Boat.obj");
+    boat2 = new OBJObject("Boat.obj");
     bb1 = new BoundingBox(boat);
     bb2 = new BoundingBox(boat2);
 
-    island = new OBJObject("wS free terrain 018/WS free terrain 018.obj");
-    ocean = new OBJObject("wS free terrain 018/Ocean obj/Ocean.obj");
+    ocean = new OBJObject("Ocean.obj");
     
     bc1 = new BezierCurve(cp, NUM_CP);
     bc2 = new BezierCurve(cp2, NUM_CP);
@@ -89,9 +94,6 @@ void Window::initialize_objects()
     SoundEngine->play2D("Battle sounds.wav", GL_TRUE);
     SoundEngine->play2D("bensound-epic.wav", GL_TRUE);
     
-
-    island->scale(100);
-    island->translate(0.0f, -70.0f, 0.0f);
     ocean->scale(200);
     ocean->translate(0.0f, 1.0f, 0.0f);
     boat->scale(0.6);
@@ -111,6 +113,7 @@ void Window::initialize_objects()
     skyboxShader = LoadShaders("skyShader.vert", "skyShader.frag");
     trackShader = LoadShaders("track.vert", "track.frag");
     boxShader = LoadShaders("boxShader.vert", "boxShader.frag");
+    oceanShader = LoadShaders("oceanShader.vert", "oceanShader.frag");
 }
 
 void Window::clean_up()
@@ -118,7 +121,6 @@ void Window::clean_up()
     delete(boat);
     delete(boat2);
     delete(skyBox);
-    delete(island);
     delete(ocean);
     delete(bc1);
     delete(bc2);
@@ -133,6 +135,7 @@ void Window::clean_up()
     glDeleteProgram(skyboxShader);
     glDeleteProgram(trackShader);
     glDeleteProgram(boxShader);
+    glDeleteProgram(oceanShader);
 }
 
 GLFWwindow* Window::create_window(int width, int height)
@@ -294,13 +297,36 @@ void Window::display_callback(GLFWwindow* window)
     glUseProgram(skyboxShader);
     skyBox->draw(skyboxShader);
     
+    glUseProgram(oceanShader);
+    
+    //============================ Material ============================//
+    GLuint materialID = glGetUniformLocation(oceanShader, "material.ambient");
+    glUniform3fv(materialID, 1, (GLfloat*) &matAmb2);
+    materialID = glGetUniformLocation(oceanShader, "material.diffuse");
+    glUniform3fv(materialID, 1, (GLfloat*) &matDiff2);
+    materialID = glGetUniformLocation(oceanShader, "material.specular");
+    glUniform3fv(materialID, 1, (GLfloat*) &matSpec2);
+    materialID = glGetUniformLocation(oceanShader, "material.shininess");
+    glUniform1f(materialID, matShine2);
+    //========================== Direct light ==========================//
+    materialID = glGetUniformLocation(oceanShader, "dirLight.ambient");
+    glUniform3fv(materialID, 1, (GLfloat*) &dirAmb);
+    materialID = glGetUniformLocation(oceanShader, "dirLight.diffuse");
+    glUniform3fv(materialID, 1, (GLfloat*) &dirDiff);
+    materialID = glGetUniformLocation(oceanShader, "dirLight.specular");
+    glUniform3fv(materialID, 1, (GLfloat*) &dirSpec);
+    materialID = glGetUniformLocation(oceanShader, "dirLight.direction");
+    glUniform3fv(materialID, 1, (GLfloat*) &dirLight_dir );
+    
+    ocean->draw(oceanShader);
+    
     
 	glUseProgram(shaderProgram);
 
     glm::vec3 curPoint; // direction of light follow by mouse
 
     //============================ Material ============================//
-    GLuint materialID = glGetUniformLocation(shaderProgram, "material.ambient");
+    materialID = glGetUniformLocation(shaderProgram, "material.ambient");
     glUniform3fv(materialID, 1, (GLfloat*) &matAmb);
     materialID = glGetUniformLocation(shaderProgram, "material.diffuse");
     glUniform3fv(materialID, 1, (GLfloat*) &matDiff);
@@ -318,7 +344,7 @@ void Window::display_callback(GLFWwindow* window)
     materialID = glGetUniformLocation(shaderProgram, "dirLight.direction");
     glUniform3fv(materialID, 1, (GLfloat*) &dirLight_dir );
     
-    ocean->draw(shaderProgram);
+    
     boat->draw(shaderProgram);
     boat2->draw(shaderProgram);
     

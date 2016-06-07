@@ -112,8 +112,6 @@ void OBJObject::parse(const char *filepath)
             indexNorm.push_back( norms[2] -1);
         }
     }
-
-    loadMaterial("wS free terrain 018/WS free terrain 018.mtl");
     
     // read normal data accordingly
     fclose(fp);  
