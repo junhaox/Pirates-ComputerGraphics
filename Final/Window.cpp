@@ -7,6 +7,7 @@ int Window::width;
 int Window::height;
 
 GLint shaderProgram;
+GLint shaderProgram2;
 GLint skyboxShader;
 GLint trackShader;
 GLint boxShader;
@@ -15,12 +16,18 @@ GLint parallaxShader;
 
 GLboolean parallax_mapping = false;  // normal mapping or displacement
 GLfloat height_scale = 0.1;
-bool hide = false;                  // decide if the wall should be hidden
+bool hide = true;                  // decide if the wall should be hidden
 
 const int NUM_CP = 24;
 bool stop = true;
 bool drawBox = false;
+bool showName = false;
 bool collision = false;
+bool collision2 = false;
+bool collision3 = false;
+bool collision4 = false;
+bool collision5 = false;
+bool collision6 = false;
 float trans = 0.0;
 float trans2 = 0.0;
 
@@ -29,10 +36,13 @@ Cube * skyBox;
 OBJObject * boat;
 OBJObject * boat2;
 OBJObject * ocean;
+OBJObject * name;
 ControlPoint * cp[NUM_CP];
 ControlPoint * cp2[NUM_CP];
 BezierCurve * bc1;
 BezierCurve * bc2;
+BoundingBox * bb1;
+BoundingBox * bb2;
 std::vector<BoundingBox*> bb_vec;
 std::vector<BoundingBox*> bb_vec2;
 BoatGenerator *boat_generator;
@@ -52,17 +62,23 @@ glm::vec3 lastPoint;                        // coordinates of the last position
 glm::vec3 curPoint;                         // coordinates of the current position
 GLfloat fov =  45.0f;
 //========================[ Colors ]=========================//
-//material color: gold
-glm::vec3 matAmb(0.329412,0.223529,0.027451);
-glm::vec3 matDiff(0.780392, 0.568627, 0.113725);
-glm::vec3 matSpec(0.992157, 0.941176, 0.807843);
-float matShine = 3;
+//material color: obsidian
+glm::vec3 matAmb(0.05375,0.05,0.06625);
+glm::vec3 matDiff(0.18275, 0.17, 0.22525);
+glm::vec3 matSpec(0.332741, 0.328634, 0.346435);
+float matShine = 0.3;
 
 //material color: turquoise
 glm::vec3 matAmb2(0.1, 0.18725, 0.1745);
 glm::vec3 matDiff2(0.396, 0.74151, 0.69102);
 glm::vec3 matSpec2(0.297254, 0.30829, 0.306678);
 float matShine2 = 0.1;
+
+//material color: gold
+glm::vec3 matAmb3(0.329412,0.223529,0.027451);
+glm::vec3 matDiff3(0.780392, 0.568627, 0.113725);
+glm::vec3 matSpec3(0.992157, 0.941176, 0.807843);
+float matShine3 = 3;
 
 // directional & point light
 glm::vec3 dirAmb(0.8f, 0.8f, 0.8f);
@@ -88,11 +104,12 @@ glm::vec3 nextBoatLocation2;                   // new location of the pod on the
 void Window::initialize_objects()
 {
     skyBox = new Cube();
-    skyBox->scale(20);
+    skyBox->scale(100);
     boat = new OBJObject("Boat.obj");
     boat2 = new OBJObject("Boat.obj");
+    name = new OBJObject("names.obj");
     
-    ocean = new OBJObject("Ocean.obj");
+    ocean = new OBJObject("bigocrean3.obj");
     boat_generator = new BoatGenerator();
     boat_generator2 = new BoatGenerator();
     
@@ -106,6 +123,9 @@ void Window::initialize_objects()
         bb_vec2.push_back(bb2);
     }
     
+    bb1 = new BoundingBox(boat);
+    bb2 = new BoundingBox(boat2);
+    
     SoundEngine = createIrrKlangDevice();
     SoundEngine->play2D("Thunderstorm.wav", GL_TRUE);
     SoundEngine->play2D("Battle sounds.wav", GL_TRUE);
@@ -114,9 +134,12 @@ void Window::initialize_objects()
     ocean->scale(300);
     ocean->translate(0.0f, 1.0f, 0.0f);
     boat->scale(0.6);
-    boat->translate(40.0f, 1.0f, 180.0f);
+    boat->translate(40.0f, 2.0f, 180.0f);
     boat2->scale(0.6);
-    boat2->translate(-80.0f, 1.0f, 200.0f);
+    boat2->translate(-80.0f, 2.0f, 200.0f);
+    
+    name->scale(10);
+    name->translate(100.0f, 30.0f, 400.0f);
     
     boat_generator->world->update( getMatrix(glm::vec3(0.0, 0.0, -50), glm::vec3(1.0f), 0, 0) );
     boat_generator2->world->update( getMatrix(glm::vec3(-50, 0.0, 160.0), glm::vec3(1.0f), -90, 2) );
@@ -130,6 +153,7 @@ void Window::initialize_objects()
     lastBoatLocation2 = moveBoat(4);
     
     shaderProgram = LoadShaders("shader.vert", "shader.frag");
+    shaderProgram2 = LoadShaders("shader2.vert", "shader2.frag");
     skyboxShader = LoadShaders("skyShader.vert", "skyShader.frag");
     trackShader = LoadShaders("track.vert", "track.frag");
     boxShader = LoadShaders("boxShader.vert", "boxShader.frag");
@@ -151,6 +175,7 @@ void Window::clean_up()
     delete(boat_generator);
     delete(boat_generator2);
     delete(wall_disp);
+    delete(name);
     for (int i = 0; i < bb_vec.size(); i++) {
         delete(bb_vec[i]);
         delete(bb_vec2[i]);
@@ -159,8 +184,11 @@ void Window::clean_up()
         delete(cp[i]);
         delete(cp2[i]);
     }
+    delete(bb1);
+    delete(bb2);
 
 	glDeleteProgram(shaderProgram);
+    glDeleteProgram(shaderProgram2);
     glDeleteProgram(skyboxShader);
     glDeleteProgram(trackShader);
     glDeleteProgram(boxShader);
@@ -310,37 +338,99 @@ void Window::idle_callback()
         boat_generator2->world->update( getMatrix(glm::vec3(trans2 - 50, 0.0, 160.0), glm::vec3(1.0f), -90, 2) );
     }
     
+    if (showName)
+        name->translate(-1, 0, 0);
+    
     collision = false;
+    collision2 = false;
+    collision3 = false;
+    collision4 = false;
+    collision5 = false;
+    collision6 = false;
+    bb1->collided = 0;
+    bb2->collided = 0;
+    for (int i = 0; i < bb_vec.size(); i++) {
+        bb_vec[i]->collided = 0;
+        bb_vec2[i]->collided = 0;
+    }
+    
+    //************ Update min and max **************//
+    bb1->update2();
+    bb2->update2();
     
     for (int i = 0; i < bb_vec.size(); i++) {
         bb_vec[i]->update();
         bb_vec2[i]->update();
     }
     
+    
+    //************ Check collision **************//
     for (int i = 0; i < bb_vec.size(); i++) {
         for (int j = 0; j < bb_vec2.size(); j++) {
             if (bb_vec[i]->checkCollision(bb_vec2[j])) {
                 collision = true;
-                break;
             }
+        }
+        if (bb_vec[i]->checkCollision(bb1)) {
+            collision2 = true;
+        }
+        if (bb_vec[i]->checkCollision(bb2)) {
+            collision3 = true;
+        }
+        if (bb_vec2[i]->checkCollision(bb1)) {
+            collision4 = true;
+        }
+        if (bb_vec2[i]->checkCollision(bb2)) {
+            collision5 = true;
         }
     }
     
-    for (int i = 0; i < bb_vec.size(); i++) {
-        if (collision) {
+    if (bb1->checkCollision(bb2))
+        collision6 = true;
+    
+    
+    //************ Do collision **************//
+    if (collision) {
+        for (int i = 0; i < bb_vec.size(); i++) {
             bb_vec[i]->collided = 1;
             bb_vec2[i]->collided = 1;
         }
-        else {
-            bb_vec[i]->collided = 0;
-            bb_vec2[i]->collided = 0;
-        }
     }
     
-    if (collision)
+    if (collision2) {
+        for (int i = 0; i < bb_vec.size(); i++)
+            bb_vec[i]->collided = 1;
+        bb1->collided = 1;
+    }
+    
+    if (collision3) {
+        for (int i = 0; i < bb_vec.size(); i++)
+            bb_vec[i]->collided = 1;
+        bb2->collided = 1;
+    }
+    
+    if (collision4) {
+        for (int i = 0; i < bb_vec2.size(); i++)
+            bb_vec2[i]->collided = 1;
+        bb1->collided = 1;
+    }
+    
+    if (collision5) {
+        for (int i = 0; i < bb_vec2.size(); i++)
+            bb_vec2[i]->collided = 1;
+        bb2->collided = 1;
+    }
+    
+    if (collision6) {
+        bb1->collided = 1;
+        bb2->collided = 1;
+    }
+    
+
+    if (collision || collision2 || collision3 || collision4 || collision5 || collision6)
         SoundEngine->play2D("explosion.wav", GL_FALSE);
-    
-    
+
+
     lastPoint = curPoint;
 }
 
@@ -400,10 +490,32 @@ void Window::display_callback(GLFWwindow* window)
     glUniform3fv(materialID, 1, (GLfloat*) &dirLight_dir );
     
     
-    //boat->draw(shaderProgram);
-    //boat2->draw(shaderProgram);
-    boat_generator->world->draw(shaderProgram);
-    boat_generator2->world->draw(shaderProgram);
+    boat->draw(shaderProgram);
+    boat2->draw(shaderProgram);
+    
+    glUseProgram(shaderProgram2);
+    
+    //============================ Material ============================//
+    materialID = glGetUniformLocation(shaderProgram2, "material.ambient");
+    glUniform3fv(materialID, 1, (GLfloat*) &matAmb3);
+    materialID = glGetUniformLocation(shaderProgram2, "material.diffuse");
+    glUniform3fv(materialID, 1, (GLfloat*) &matDiff3);
+    materialID = glGetUniformLocation(shaderProgram2, "material.specular");
+    glUniform3fv(materialID, 1, (GLfloat*) &matSpec3);
+    materialID = glGetUniformLocation(shaderProgram2, "material.shininess");
+    glUniform1f(materialID, matShine3);
+    //========================== Direct light ==========================//
+    materialID = glGetUniformLocation(shaderProgram2, "dirLight.ambient");
+    glUniform3fv(materialID, 1, (GLfloat*) &dirAmb);
+    materialID = glGetUniformLocation(shaderProgram2, "dirLight.diffuse");
+    glUniform3fv(materialID, 1, (GLfloat*) &dirDiff);
+    materialID = glGetUniformLocation(shaderProgram2, "dirLight.specular");
+    glUniform3fv(materialID, 1, (GLfloat*) &dirSpec);
+    materialID = glGetUniformLocation(shaderProgram2, "dirLight.direction");
+    glUniform3fv(materialID, 1, (GLfloat*) &dirLight_dir );
+    
+    boat_generator->world->draw(shaderProgram2);
+    boat_generator2->world->draw(shaderProgram2);
     
     if (drawBox) {
         glUseProgram(boxShader);
@@ -411,6 +523,14 @@ void Window::display_callback(GLFWwindow* window)
             bb_vec[i]->draw(boxShader);
             bb_vec2[i]->draw(boxShader);
         }
+        bb1->draw2(boxShader);
+        bb2->draw2(boxShader);
+    }
+    
+    
+    
+    if (showName) {
+        name->draw(shaderProgram2);
     }
     
     if(!hide)
@@ -450,6 +570,20 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
             parallax_mapping = !parallax_mapping;
         else if (key == GLFW_KEY_H)
             hide = !hide;
+        else if (key == GLFW_KEY_N)
+            showName = !showName;
+        else if (key == GLFW_KEY_R) {
+            boat_generator = new BoatGenerator();
+            boat_generator2 = new BoatGenerator();
+            for (int i = 0; i < boat_generator->c_vec.size(); i++) {
+                bb_vec[i] = new BoundingBox(boat_generator->c_vec[i]);
+                bb_vec2[i] = new BoundingBox(boat_generator2->c_vec[i]);
+            }
+            boat_generator->world->update( getMatrix(glm::vec3(0.0, 0.0, -50), glm::vec3(1.0f), 0, 0) );
+            boat_generator2->world->update( getMatrix(glm::vec3(-50, 0.0, 160.0), glm::vec3(1.0f), -90, 2) );
+            trans = 0.0;
+            trans2 = 0.0;
+        }
     }
 }
 

@@ -90,6 +90,8 @@
 		20C123BD1D07274F004783EA /* image_helper.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = image_helper.c; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/src/image_helper.c"; sourceTree = "<group>"; };
 		20C123BE1D07274F004783EA /* SOIL.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = SOIL.c; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/src/SOIL.c"; sourceTree = "<group>"; };
 		20C123BF1D07274F004783EA /* stb_image_aug.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = stb_image_aug.c; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/src/stb_image_aug.c"; sourceTree = "<group>"; };
+		20C123C41D073584004783EA /* shader2.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader2.frag; sourceTree = "<group>"; };
+		20C123C51D073584004783EA /* shader2.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader2.vert; sourceTree = "<group>"; };
 		20D87BE01D069F8600547A26 /* BoatGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoatGenerator.cpp; sourceTree = "<group>"; };
 		20D87BE11D069F8600547A26 /* BoatGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoatGenerator.h; sourceTree = "<group>"; };
 		20D87BE41D06B05C00547A26 /* Cylinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cylinder.h; sourceTree = "<group>"; };
@@ -176,6 +178,8 @@
 				200F781E1CF8EF720042F780 /* shader.h */,
 				200F781F1CF8EF720042F780 /* shader.vert */,
 				200F781D1CF8EF720042F780 /* shader.frag */,
+				20C123C41D073584004783EA /* shader2.frag */,
+				20C123C51D073584004783EA /* shader2.vert */,
 				205CE16C1D0655F7003097DE /* oceanShader.frag */,
 				205CE16D1D0655F7003097DE /* oceanShader.vert */,
 				200F78211CF8EF720042F780 /* skyShader.vert */,

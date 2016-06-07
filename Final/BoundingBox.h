@@ -22,7 +22,7 @@
 class BoundingBox
 {
 public:
-    //BoundingBox(OBJObject *obj);
+    BoundingBox(OBJObject *obj);
     BoundingBox(Cylinder *obj);
     BoundingBox();
     ~BoundingBox();
@@ -34,12 +34,14 @@ public:
     glm::vec3 center;
     glm::mat4 transform;
     Cylinder *object;
+    OBJObject *object2;
     int collided;
     
     bool checkCollision(BoundingBox *bb);
-    void doCollision();
     void draw(GLuint shaderProgram);
     void update();
+    void draw2(GLuint shaderProgram);
+    void update2();
 };
 
 #endif /* BoundingBox_h */
