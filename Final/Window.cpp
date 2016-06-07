@@ -105,13 +105,16 @@ void Window::initialize_objects()
     SoundEngine->play2D("Battle sounds.wav", GL_TRUE);
     SoundEngine->play2D("bensound-epic.wav", GL_TRUE);
     
-    ocean->scale(200);
+    ocean->scale(300);
     ocean->translate(0.0f, 1.0f, 0.0f);
     boat->scale(0.6);
     boat->translate(40.0f, 1.0f, 180.0f);
     boat2->scale(0.6);
     boat2->translate(-80.0f, 1.0f, 200.0f);
     
+    boat_generator->world->update( getMatrix(glm::vec3(0.0, 0.0, -50), glm::vec3(1.0f), 0, 0) );
+    boat_generator2->world->update( getMatrix(glm::vec3(-50, 0.0, 160.0), glm::vec3(1.0f), -90, 2) );
+
     counter = bc1->getCounter();
     timePassed = bc1->getTime();
     counter2 = bc2->getCounter();
@@ -288,13 +291,28 @@ void Window::idle_callback()
         lastBoatLocation2 = nextBoatLocation2;
         
         // ******** Boat 3 movement ******** //
-        trans += 0.2;
-        boat_generator->world->update( getMatrix(glm::vec3(0.0, 0.0, trans), glm::vec3(1.0f), 0, 0) );
+        trans += 0.4;
+        boat_generator->world->update( getMatrix(glm::vec3(0.0, 0.0, trans - 50), glm::vec3(1.0f), 0, 0) );
         
-        trans2 += 0.4;
-        boat_generator2->world->update( getMatrix(glm::vec3(trans, 0.0, 0.0), glm::vec3(1.0f), 0, 0) );
+        trans2 += 0.8;
+        boat_generator2->world->update( getMatrix(glm::vec3(trans2 - 50, 0.0, 160.0), glm::vec3(1.0f), -90, 2) );
     }
     
+    collision = false;
+    
+    for (int i = 0; i < bb_vec.size(); i++) {
+        bb_vec[i]->update();
+        bb_vec2[i]->update();
+    }
+    
+    for (int i = 0; i < bb_vec.size(); i++) {
+        for (int j = 0; j < bb_vec2.size(); j++) {
+            if (bb_vec[i]->checkCollision(bb_vec2[j])) {
+                collision = true;
+                break;
+            }
+        }
+    }
     
     for (int i = 0; i < bb_vec.size(); i++) {
         if (collision) {
@@ -306,6 +324,9 @@ void Window::idle_callback()
             bb_vec2[i]->collided = 0;
         }
     }
+    
+    if (collision)
+        SoundEngine->play2D("explosion.wav", GL_FALSE);
     
     
     lastPoint = curPoint;
