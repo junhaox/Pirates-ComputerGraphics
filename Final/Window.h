@@ -17,6 +17,7 @@
 #include "Cylinder.h"
 #include "BoundingBox.h"
 #include "BoatGenerator.h"
+#include "parallax.h"
 
 
 using namespace std;

@@ -11,6 +11,11 @@ GLint skyboxShader;
 GLint trackShader;
 GLint boxShader;
 GLint oceanShader;
+GLint parallaxShader;
+
+GLboolean parallax_mapping = false;  // normal mapping or displacement
+GLfloat height_scale = 0.1;
+bool hide = false;                  // decide if the wall should be hidden
 
 const int NUM_CP = 24;
 bool stop = true;
@@ -32,6 +37,7 @@ std::vector<BoundingBox*> bb_vec;
 std::vector<BoundingBox*> bb_vec2;
 BoatGenerator *boat_generator;
 BoatGenerator *boat_generator2;
+parallax *wall_disp;
 //===============[ Default camera parameters ]================//
 glm::vec3 eye_pos;
 glm::vec3 look_dir;
@@ -128,6 +134,10 @@ void Window::initialize_objects()
     trackShader = LoadShaders("track.vert", "track.frag");
     boxShader = LoadShaders("boxShader.vert", "boxShader.frag");
     oceanShader = LoadShaders("oceanShader.vert", "oceanShader.frag");
+    parallaxShader = LoadShaders("parallax_mapping.vert", "parallax_mapping.frag");
+    
+    wall_disp = new parallax(parallaxShader);
+   
 }
 
 void Window::clean_up()
@@ -140,6 +150,7 @@ void Window::clean_up()
     delete(bc2);
     delete(boat_generator);
     delete(boat_generator2);
+    delete(wall_disp);
     for (int i = 0; i < bb_vec.size(); i++) {
         delete(bb_vec[i]);
         delete(bb_vec2[i]);
@@ -154,6 +165,7 @@ void Window::clean_up()
     glDeleteProgram(trackShader);
     glDeleteProgram(boxShader);
     glDeleteProgram(oceanShader);
+    glDeleteProgram(parallaxShader);
 }
 
 GLFWwindow* Window::create_window(int width, int height)
@@ -401,6 +413,8 @@ void Window::display_callback(GLFWwindow* window)
         }
     }
     
+    if(!hide)
+        wall_disp->draw(parallaxShader, height_scale, parallax_mapping, cam_pos);
 
 	// Gets events, including input such as keyboard and mouse or window resizing
 	glfwPollEvents();
@@ -414,19 +428,28 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
         if (key == GLFW_KEY_ESCAPE)
             glfwSetWindowShouldClose(window, GL_TRUE);
         
-        if (key == GLFW_KEY_S) {
+        else if (key == GLFW_KEY_S) {
             if (stop == true)
                 stop = false;
             else
                 stop = true;
         }
         
-        if (key == GLFW_KEY_D) {
+        else if (key == GLFW_KEY_D) {
             if (drawBox == true)
                 drawBox = false;
             else
                 drawBox = true;
         }
+        
+        else if (key == GLFW_KEY_Q)
+            height_scale -= 0.003;
+        else if (key == GLFW_KEY_E)
+            height_scale += 0.003;
+        else if (key == GLFW_KEY_SPACE)
+            parallax_mapping = !parallax_mapping;
+        else if (key == GLFW_KEY_H)
+            hide = !hide;
     }
 }
 

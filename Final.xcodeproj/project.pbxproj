@@ -17,8 +17,14 @@
 		203BF33B1D04E8CC00E07E6F /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 203BF3391D04E8CC00E07E6F /* Window.cpp */; };
 		203BF3421D04ED7E00E07E6F /* libirrklang.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 203BF3411D04ED7E00E07E6F /* libirrklang.dylib */; };
 		203BF3441D04F9BF00E07E6F /* BoundingBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 203BF3431D04F9BF00E07E6F /* BoundingBox.cpp */; };
+		207078E71D06C8E8006DFC32 /* parallax.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 207078E51D06C8E8006DFC32 /* parallax.cpp */; };
 		20B8D8701D04D7B600B2C8AE /* BezierCurve.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B8D8601D04D7B600B2C8AE /* BezierCurve.cpp */; };
 		20B8D8711D04D7B600B2C8AE /* ControlPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B8D8621D04D7B600B2C8AE /* ControlPoint.cpp */; };
+		20C123B31D0726AF004783EA /* libSOIL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C123B21D0726AF004783EA /* libSOIL.a */; };
+		20C123C01D07274F004783EA /* image_DXT.c in Sources */ = {isa = PBXBuildFile; fileRef = 20C123BC1D07274F004783EA /* image_DXT.c */; };
+		20C123C11D07274F004783EA /* image_helper.c in Sources */ = {isa = PBXBuildFile; fileRef = 20C123BD1D07274F004783EA /* image_helper.c */; };
+		20C123C21D07274F004783EA /* SOIL.c in Sources */ = {isa = PBXBuildFile; fileRef = 20C123BE1D07274F004783EA /* SOIL.c */; };
+		20C123C31D07274F004783EA /* stb_image_aug.c in Sources */ = {isa = PBXBuildFile; fileRef = 20C123BF1D07274F004783EA /* stb_image_aug.c */; };
 		20D87BE21D069F8600547A26 /* BoatGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20D87BE01D069F8600547A26 /* BoatGenerator.cpp */; };
 		20FDA6F71D0273C7009904B4 /* Cylinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20FDA6F01D0273C7009904B4 /* Cylinder.cpp */; };
 		20FDA6F81D0273C7009904B4 /* Geode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20FDA6F11D0273C7009904B4 /* Geode.cpp */; };
@@ -63,6 +69,10 @@
 		203BF3451D04F9D100E07E6F /* BoundingBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoundingBox.h; sourceTree = "<group>"; };
 		205CE16C1D0655F7003097DE /* oceanShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = oceanShader.frag; sourceTree = "<group>"; };
 		205CE16D1D0655F7003097DE /* oceanShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = oceanShader.vert; sourceTree = "<group>"; };
+		207078E31D06C8E8006DFC32 /* parallax_mapping.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = parallax_mapping.frag; sourceTree = "<group>"; };
+		207078E41D06C8E8006DFC32 /* parallax_mapping.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = parallax_mapping.vert; sourceTree = "<group>"; };
+		207078E51D06C8E8006DFC32 /* parallax.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parallax.cpp; sourceTree = "<group>"; };
+		207078E61D06C8E8006DFC32 /* parallax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parallax.h; sourceTree = "<group>"; };
 		207146FA1D05600B005F8095 /* boxShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = boxShader.frag; sourceTree = "<group>"; };
 		207146FB1D05600B005F8095 /* boxShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = boxShader.vert; sourceTree = "<group>"; };
 		20B8D8601D04D7B600B2C8AE /* BezierCurve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BezierCurve.cpp; sourceTree = "<group>"; };
@@ -71,6 +81,15 @@
 		20B8D8631D04D7B600B2C8AE /* ControlPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlPoint.h; sourceTree = "<group>"; };
 		20B8D86D1D04D7B600B2C8AE /* track.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = track.frag; sourceTree = "<group>"; };
 		20B8D86E1D04D7B600B2C8AE /* track.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = track.vert; sourceTree = "<group>"; };
+		20C123B21D0726AF004783EA /* libSOIL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSOIL.a; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/lib/libSOIL.a"; sourceTree = "<group>"; };
+		20C123B41D0726DF004783EA /* image_DXT.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = image_DXT.c; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/src/image_DXT.c"; sourceTree = "<group>"; };
+		20C123B51D0726DF004783EA /* image_helper.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = image_helper.c; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/src/image_helper.c"; sourceTree = "<group>"; };
+		20C123B61D0726DF004783EA /* SOIL.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = SOIL.c; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/src/SOIL.c"; sourceTree = "<group>"; };
+		20C123B71D0726DF004783EA /* stb_image_aug.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = stb_image_aug.c; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/src/stb_image_aug.c"; sourceTree = "<group>"; };
+		20C123BC1D07274F004783EA /* image_DXT.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = image_DXT.c; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/src/image_DXT.c"; sourceTree = "<group>"; };
+		20C123BD1D07274F004783EA /* image_helper.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = image_helper.c; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/src/image_helper.c"; sourceTree = "<group>"; };
+		20C123BE1D07274F004783EA /* SOIL.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = SOIL.c; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/src/SOIL.c"; sourceTree = "<group>"; };
+		20C123BF1D07274F004783EA /* stb_image_aug.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = stb_image_aug.c; path = "../../../../../../Developer/Simple-OpenGL-Image-Library/src/stb_image_aug.c"; sourceTree = "<group>"; };
 		20D87BE01D069F8600547A26 /* BoatGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoatGenerator.cpp; sourceTree = "<group>"; };
 		20D87BE11D069F8600547A26 /* BoatGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoatGenerator.h; sourceTree = "<group>"; };
 		20D87BE41D06B05C00547A26 /* Cylinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cylinder.h; sourceTree = "<group>"; };
@@ -88,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20C123B31D0726AF004783EA /* libSOIL.a in Frameworks */,
 				203BF3421D04ED7E00E07E6F /* libirrklang.dylib in Frameworks */,
 				200F780E1CF8EF060042F780 /* libGLEW.1.13.0.dylib in Frameworks */,
 				200F780C1CF8EEE70042F780 /* libglfw.3.1.dylib in Frameworks */,
@@ -101,6 +121,15 @@
 		200F77F61CF8EE0E0042F780 = {
 			isa = PBXGroup;
 			children = (
+				20C123BC1D07274F004783EA /* image_DXT.c */,
+				20C123BD1D07274F004783EA /* image_helper.c */,
+				20C123BE1D07274F004783EA /* SOIL.c */,
+				20C123BF1D07274F004783EA /* stb_image_aug.c */,
+				20C123B41D0726DF004783EA /* image_DXT.c */,
+				20C123B51D0726DF004783EA /* image_helper.c */,
+				20C123B61D0726DF004783EA /* SOIL.c */,
+				20C123B71D0726DF004783EA /* stb_image_aug.c */,
+				20C123B21D0726AF004783EA /* libSOIL.a */,
 				203BF3411D04ED7E00E07E6F /* libirrklang.dylib */,
 				200F780D1CF8EF060042F780 /* libGLEW.1.13.0.dylib */,
 				200F780B1CF8EEE70042F780 /* libglfw.3.1.dylib */,
@@ -129,6 +158,8 @@
 				203BF3451D04F9D100E07E6F /* BoundingBox.h */,
 				20D87BE01D069F8600547A26 /* BoatGenerator.cpp */,
 				20D87BE11D069F8600547A26 /* BoatGenerator.h */,
+				207078E51D06C8E8006DFC32 /* parallax.cpp */,
+				207078E61D06C8E8006DFC32 /* parallax.h */,
 				20FDA6F51D0273C7009904B4 /* Node.h */,
 				20FDA6F41D0273C7009904B4 /* MatrixTransform.cpp */,
 				20FDA6F31D0273C7009904B4 /* Group.cpp */,
@@ -151,6 +182,8 @@
 				200F78201CF8EF720042F780 /* skyShader.frag */,
 				207146FA1D05600B005F8095 /* boxShader.frag */,
 				207146FB1D05600B005F8095 /* boxShader.vert */,
+				207078E31D06C8E8006DFC32 /* parallax_mapping.frag */,
+				207078E41D06C8E8006DFC32 /* parallax_mapping.vert */,
 				20B8D86D1D04D7B600B2C8AE /* track.frag */,
 				20B8D86E1D04D7B600B2C8AE /* track.vert */,
 				203BF3391D04E8CC00E07E6F /* Window.cpp */,
@@ -217,11 +250,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20C123C01D07274F004783EA /* image_DXT.c in Sources */,
+				20C123C11D07274F004783EA /* image_helper.c in Sources */,
+				20C123C21D07274F004783EA /* SOIL.c in Sources */,
+				20C123C31D07274F004783EA /* stb_image_aug.c in Sources */,
 				20FDA6F91D0273C7009904B4 /* Group.cpp in Sources */,
 				20FDA6FB1D0273C7009904B4 /* Pod.cpp in Sources */,
 				200F782A1CF8EF720042F780 /* OBJObject.cpp in Sources */,
 				20B8D8701D04D7B600B2C8AE /* BezierCurve.cpp in Sources */,
 				200F78251CF8EF720042F780 /* Cube.cpp in Sources */,
+				207078E71D06C8E8006DFC32 /* parallax.cpp in Sources */,
 				20B8D8711D04D7B600B2C8AE /* ControlPoint.cpp in Sources */,
 				200F78031CF8EE0E0042F780 /* main.cpp in Sources */,
 				20D87BE21D069F8600547A26 /* BoatGenerator.cpp in Sources */,
@@ -329,12 +367,14 @@
 					"/Developer/glew-1.13.0/include",
 					/usr/local/include,
 					"/Developer/irrKlang-64bit-1.5.0/include",
+					"/Developer/Simple-OpenGL-Image-Library/src",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Developer/glfw-3.1.2/src",
 					/usr/local/lib,
 					"/Developer/irrKlang-64bit-1.5.0/lib/Winx64-visualStudio",
+					"/Developer/Simple-OpenGL-Image-Library/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -351,12 +391,14 @@
 					"/Developer/glew-1.13.0/include",
 					/usr/local/include,
 					"/Developer/irrKlang-64bit-1.5.0/include",
+					"/Developer/Simple-OpenGL-Image-Library/src",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Developer/glfw-3.1.2/src",
 					/usr/local/lib,
 					"/Developer/irrKlang-64bit-1.5.0/lib/Winx64-visualStudio",
+					"/Developer/Simple-OpenGL-Image-Library/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
