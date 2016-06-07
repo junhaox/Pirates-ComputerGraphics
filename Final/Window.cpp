@@ -84,9 +84,11 @@ void Window::initialize_objects()
     bc2 = new BezierCurve(cp2, NUM_CP);
     
     
-    /*SoundEngine = createIrrKlangDevice();
-    SoundEngine->play2D("bell.wav", GL_TRUE);
-    SoundEngine->play2D("explosion.wav", GL_TRUE);*/
+    SoundEngine = createIrrKlangDevice();
+    SoundEngine->play2D("Thunderstorm.wav", GL_TRUE);
+    SoundEngine->play2D("Battle sounds.wav", GL_TRUE);
+    SoundEngine->play2D("bensound-epic.wav", GL_TRUE);
+    
 
     island->scale(100);
     island->translate(0.0f, -70.0f, 0.0f);
@@ -247,7 +249,7 @@ void Window::idle_callback()
         // give it a little push
         displacement2 += 0.1;
         
-        velocity2 = sqrt( 0.001 * displacement2 );
+        velocity2 = sqrt( 0.0001 * displacement2 );
         
         timePassed2 += velocity2;
         
@@ -264,7 +266,7 @@ void Window::idle_callback()
         transMatrix2[3] = glm::vec4( nextBoatLocation2 - lastBoatLocation2, 1.0f);
         
         boat2->toWorld = transMatrix2;
-        boat2->moveTo(nextBoatLocation2);
+        boat2->moveTo(-nextBoatLocation2);
         lastBoatLocation2 = nextBoatLocation2;
     }
     
@@ -274,6 +276,7 @@ void Window::idle_callback()
     if (bb1->checkCollision(bb2)) {
         bb1->collided = 1;
         bb2->collided = 1;
+        SoundEngine->play2D("explosion.wav", GL_FALSE);
     }
     else {
         bb1->collided = 0;
