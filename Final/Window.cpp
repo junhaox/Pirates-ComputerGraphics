@@ -82,7 +82,7 @@ void Window::initialize_objects()
     boat2 = new OBJObject("Boat.obj");
     bb1 = new BoundingBox(boat);
     bb2 = new BoundingBox(boat2);
-
+    
     ocean = new OBJObject("Ocean.obj");
     
     bc1 = new BezierCurve(cp, NUM_CP);
