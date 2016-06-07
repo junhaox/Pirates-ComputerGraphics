@@ -228,6 +228,37 @@ void OBJObject::draw(GLuint shaderProgram)
     glBindVertexArray(0);
 }
 
+
+void OBJObject::draw(GLuint shaderProg, glm::mat4 localMatrix)
+{
+    // Calculate combination of the model (toWorld), view (camera inverse), and perspective matrices
+    this->toWorld = localMatrix;
+    glm::mat4 MVP = Window::P * Window::V * localMatrix;
+    glm::mat4 model = localMatrix;
+    glm::mat4 camera = Window::V;
+    
+    // We need to calculate this because as of GLSL version 1.40 (OpenGL 3.1, released March 2009),
+    // gl_ModelViewProjectionMatrix has been removed from the language. The user is expected to supply
+    // this matrix to the shader when using modern OpenGL.
+    GLuint MatrixID = glGetUniformLocation(shaderProg, "MVP");
+    GLuint CamID = glGetUniformLocation(shaderProg, "camera");
+    GLuint ModelID = glGetUniformLocation(shaderProg, "model");
+    
+    // create a eye vector to reference lights from
+    glm::vec3 eye = glm::vec3(0.0f, 0.0f, 20.0f);
+    
+    // pass in the camera position
+    glUniform3fv(glGetUniformLocation(shaderProg, "viewPos"), 1, &eye[0]);
+    
+    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+    glUniformMatrix4fv(CamID, 1, GL_FALSE, &camera[0][0]);
+    glUniformMatrix4fv(ModelID, 1, GL_FALSE, &model[0][0]);
+    
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, (int)indexVert.size(), GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+}
+
 void OBJObject::moveTo( glm::vec3 here ){
     
     this->toWorld[3][0] = here.x;

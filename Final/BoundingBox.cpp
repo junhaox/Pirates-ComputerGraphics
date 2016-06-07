@@ -25,7 +25,7 @@ GLushort elements[] = {
     0, 4, 1, 5, 2, 6, 3, 7
 };
 
-BoundingBox::BoundingBox(OBJObject *obj)
+/*BoundingBox::BoundingBox(OBJObject *obj)
 {
     this->object = obj;
     this->toWorld = glm::mat4(1.0f);
@@ -77,8 +77,60 @@ BoundingBox::BoundingBox(OBJObject *obj)
     this->center = glm::vec3((min.x+max.x)/2, (min.y+max.y)/2, (min.z+max.z)/2);
     this->transform = glm::translate(glm::mat4(1), this->center) * glm::scale(glm::mat4(1), this->size);
     
-}
+}*/
 
+BoundingBox::BoundingBox(Cylinder *obj)
+{
+    this->object = obj;
+    this->toWorld = glm::mat4(1.0f);
+    this->collided = 0;
+    
+    // Create buffers/arrays
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+    
+    // Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+    glBindVertexArray(VAO);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    
+    this->min.x = this->object->toDraw->vertices[0].x;
+    this->max.x = this->object->toDraw->vertices[0].x;
+    this->min.y = this->object->toDraw->vertices[0].y;
+    this->max.y = this->object->toDraw->vertices[0].y;
+    this->min.z = this->object->toDraw->vertices[0].z;
+    this->max.z = this->object->toDraw->vertices[0].z;
+    
+    for (int i = 0; i < this->object->toDraw->vertices.size(); i++) {
+        if (this->object->toDraw->vertices[i].x < this->min.x)
+            this->min.x = this->object->toDraw->vertices[i].x;
+        if (this->object->toDraw->vertices[i].x > this->max.x)
+            this->max.x = this->object->toDraw->vertices[i].x;
+        
+        if (this->object->toDraw->vertices[i].y < this->min.y)
+            this->min.y = this->object->toDraw->vertices[i].y;
+        if (this->object->toDraw->vertices[i].y > this->max.y)
+            this->max.y = this->object->toDraw->vertices[i].y;
+        
+        if (this->object->toDraw->vertices[i].z < this->min.z)
+            this->min.z = this->object->toDraw->vertices[i].z;
+        if (this->object->toDraw->vertices[i].z > this->max.z)
+            this->max.z = this->object->toDraw->vertices[i].z;
+    }
+    
+    this->size = glm::vec3(max.x-min.x, max.y-min.y, max.z-min.z);
+    this->center = glm::vec3((min.x+max.x)/2, (min.y+max.y)/2, (min.z+max.z)/2);
+    this->transform = glm::translate(glm::mat4(1), this->center) * glm::scale(glm::mat4(1), this->size);
+}
 
 BoundingBox::BoundingBox()
 {
@@ -111,7 +163,7 @@ bool BoundingBox::checkCollision(BoundingBox *bb)
 
 void BoundingBox::draw(GLuint shaderProgram)
 {
-    this->toWorld = this->object->toWorld * transform;
+    this->toWorld = this->object->M * transform;
  
     glm::mat4 MVP = Window::P * Window::V * this->toWorld;
     
@@ -140,7 +192,7 @@ void BoundingBox::draw(GLuint shaderProgram)
 
 void BoundingBox::update()
 {
-    glm::vec3 temp = glm::vec3(this->object->toWorld * glm::vec4(this->object->vertices[0], 1.0f));
+    glm::vec3 temp = glm::vec3(this->object->M * glm::vec4(this->object->toDraw->vertices[0], 1.0f));
     this->min.x = temp.x;
     this->max.x = temp.x;
     this->min.y = temp.y;
@@ -148,8 +200,8 @@ void BoundingBox::update()
     this->min.z = temp.z;
     this->max.z = temp.z;
     
-    for (int i = 0; i < this->object->vertices.size(); i++) {
-        temp = glm::vec3(this->object->toWorld * glm::vec4(this->object->vertices[i], 1.0f));
+    for (int i = 0; i < this->object->toDraw->vertices.size(); i++) {
+        temp = glm::vec3(this->object->M* glm::vec4(this->object->toDraw->vertices[i], 1.0f));
         if (temp.x < this->min.x)
             this->min.x = temp.x;
         if (temp.x > this->max.x)

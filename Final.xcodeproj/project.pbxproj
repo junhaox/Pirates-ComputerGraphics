@@ -19,6 +19,7 @@
 		203BF3441D04F9BF00E07E6F /* BoundingBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 203BF3431D04F9BF00E07E6F /* BoundingBox.cpp */; };
 		20B8D8701D04D7B600B2C8AE /* BezierCurve.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B8D8601D04D7B600B2C8AE /* BezierCurve.cpp */; };
 		20B8D8711D04D7B600B2C8AE /* ControlPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B8D8621D04D7B600B2C8AE /* ControlPoint.cpp */; };
+		20D87BE21D069F8600547A26 /* BoatGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20D87BE01D069F8600547A26 /* BoatGenerator.cpp */; };
 		20FDA6F71D0273C7009904B4 /* Cylinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20FDA6F01D0273C7009904B4 /* Cylinder.cpp */; };
 		20FDA6F81D0273C7009904B4 /* Geode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20FDA6F11D0273C7009904B4 /* Geode.cpp */; };
 		20FDA6F91D0273C7009904B4 /* Group.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20FDA6F31D0273C7009904B4 /* Group.cpp */; };
@@ -70,6 +71,9 @@
 		20B8D8631D04D7B600B2C8AE /* ControlPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlPoint.h; sourceTree = "<group>"; };
 		20B8D86D1D04D7B600B2C8AE /* track.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = track.frag; sourceTree = "<group>"; };
 		20B8D86E1D04D7B600B2C8AE /* track.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = track.vert; sourceTree = "<group>"; };
+		20D87BE01D069F8600547A26 /* BoatGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoatGenerator.cpp; sourceTree = "<group>"; };
+		20D87BE11D069F8600547A26 /* BoatGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoatGenerator.h; sourceTree = "<group>"; };
+		20D87BE41D06B05C00547A26 /* Cylinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cylinder.h; sourceTree = "<group>"; };
 		20FDA6F01D0273C7009904B4 /* Cylinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cylinder.cpp; sourceTree = "<group>"; };
 		20FDA6F11D0273C7009904B4 /* Geode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Geode.cpp; sourceTree = "<group>"; };
 		20FDA6F21D0273C7009904B4 /* Geode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geode.h; sourceTree = "<group>"; };
@@ -123,12 +127,15 @@
 				200F781A1CF8EF720042F780 /* OBJObject.h */,
 				203BF3431D04F9BF00E07E6F /* BoundingBox.cpp */,
 				203BF3451D04F9D100E07E6F /* BoundingBox.h */,
+				20D87BE01D069F8600547A26 /* BoatGenerator.cpp */,
+				20D87BE11D069F8600547A26 /* BoatGenerator.h */,
 				20FDA6F51D0273C7009904B4 /* Node.h */,
 				20FDA6F41D0273C7009904B4 /* MatrixTransform.cpp */,
 				20FDA6F31D0273C7009904B4 /* Group.cpp */,
 				20FDA6F11D0273C7009904B4 /* Geode.cpp */,
 				20FDA6F21D0273C7009904B4 /* Geode.h */,
 				20FDA6F01D0273C7009904B4 /* Cylinder.cpp */,
+				20D87BE41D06B05C00547A26 /* Cylinder.h */,
 				20FDA6F61D0273C7009904B4 /* Pod.cpp */,
 				20B8D8601D04D7B600B2C8AE /* BezierCurve.cpp */,
 				20B8D8611D04D7B600B2C8AE /* BezierCurve.h */,
@@ -217,6 +224,7 @@
 				200F78251CF8EF720042F780 /* Cube.cpp in Sources */,
 				20B8D8711D04D7B600B2C8AE /* ControlPoint.cpp in Sources */,
 				200F78031CF8EE0E0042F780 /* main.cpp in Sources */,
+				20D87BE21D069F8600547A26 /* BoatGenerator.cpp in Sources */,
 				203BF33B1D04E8CC00E07E6F /* Window.cpp in Sources */,
 				20FDA6FA1D0273C7009904B4 /* MatrixTransform.cpp in Sources */,
 				203BF3441D04F9BF00E07E6F /* BoundingBox.cpp in Sources */,

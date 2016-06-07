@@ -16,12 +16,14 @@
 #include <glm/gtx/transform.hpp>
 #include <vector>
 #include "OBJObject.h"
+#include "Cylinder.h"
 #include "Window.h"
 
 class BoundingBox
 {
 public:
-    BoundingBox(OBJObject *obj);
+    //BoundingBox(OBJObject *obj);
+    BoundingBox(Cylinder *obj);
     BoundingBox();
     ~BoundingBox();
     
@@ -31,7 +33,7 @@ public:
     glm::vec3 size;
     glm::vec3 center;
     glm::mat4 transform;
-    OBJObject *object;
+    Cylinder *object;
     int collided;
     
     bool checkCollision(BoundingBox *bb);

@@ -8,15 +8,15 @@
 #include <GLFW/glfw3.h>
 #include <irrKlang.h>
 #include "Node.h"
-#include "MatrixTransform.cpp"
-#include "Cylinder.cpp"
 #include "ControlPoint.h"
 #include "BezierCurve.h"
 #include "Pod.cpp"
 #include "Cube.h"
 #include "shader.h"
 #include "OBJObject.h"
+#include "Cylinder.h"
 #include "BoundingBox.h"
+#include "BoatGenerator.h"
 
 
 using namespace std;

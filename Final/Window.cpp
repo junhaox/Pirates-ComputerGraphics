@@ -15,6 +15,9 @@ GLint oceanShader;
 const int NUM_CP = 24;
 bool stop = true;
 bool drawBox = false;
+bool collision = false;
+float trans = 0.0;
+float trans2 = 0.0;
 
 //========================[ Objects ]==========================//
 Cube * skyBox;
@@ -25,8 +28,10 @@ ControlPoint * cp[NUM_CP];
 ControlPoint * cp2[NUM_CP];
 BezierCurve * bc1;
 BezierCurve * bc2;
-BoundingBox * bb1;
-BoundingBox * bb2;
+std::vector<BoundingBox*> bb_vec;
+std::vector<BoundingBox*> bb_vec2;
+BoatGenerator *boat_generator;
+BoatGenerator *boat_generator2;
 //===============[ Default camera parameters ]================//
 glm::vec3 eye_pos;
 glm::vec3 look_dir;
@@ -80,14 +85,20 @@ void Window::initialize_objects()
     skyBox->scale(20);
     boat = new OBJObject("Boat.obj");
     boat2 = new OBJObject("Boat.obj");
-    bb1 = new BoundingBox(boat);
-    bb2 = new BoundingBox(boat2);
     
     ocean = new OBJObject("Ocean.obj");
+    boat_generator = new BoatGenerator();
+    boat_generator2 = new BoatGenerator();
     
     bc1 = new BezierCurve(cp, NUM_CP);
     bc2 = new BezierCurve(cp2, NUM_CP);
     
+    for (int i = 0; i < boat_generator->c_vec.size(); i++) {
+        BoundingBox * bb = new BoundingBox(boat_generator->c_vec[i]);
+        BoundingBox * bb2 = new BoundingBox(boat_generator2->c_vec[i]);
+        bb_vec.push_back(bb);
+        bb_vec2.push_back(bb2);
+    }
     
     SoundEngine = createIrrKlangDevice();
     SoundEngine->play2D("Thunderstorm.wav", GL_TRUE);
@@ -124,8 +135,12 @@ void Window::clean_up()
     delete(ocean);
     delete(bc1);
     delete(bc2);
-    delete(bb1);
-    delete(bb2);
+    delete(boat_generator);
+    delete(boat_generator2);
+    for (int i = 0; i < bb_vec.size(); i++) {
+        delete(bb_vec[i]);
+        delete(bb_vec2[i]);
+    }
     for(int i =0; i < NUM_CP; i++) {
         delete(cp[i]);
         delete(cp2[i]);
@@ -271,20 +286,27 @@ void Window::idle_callback()
         boat2->toWorld = transMatrix2;
         boat2->moveTo(-nextBoatLocation2);
         lastBoatLocation2 = nextBoatLocation2;
+        
+        // ******** Boat 3 movement ******** //
+        trans += 0.2;
+        boat_generator->world->update( getMatrix(glm::vec3(0.0, 0.0, trans), glm::vec3(1.0f), 0, 0) );
+        
+        trans2 += 0.4;
+        boat_generator2->world->update( getMatrix(glm::vec3(trans, 0.0, 0.0), glm::vec3(1.0f), 0, 0) );
     }
     
-    bb1->update();
-    bb2->update();
     
-    if (bb1->checkCollision(bb2)) {
-        bb1->collided = 1;
-        bb2->collided = 1;
-        SoundEngine->play2D("explosion.wav", GL_FALSE);
+    for (int i = 0; i < bb_vec.size(); i++) {
+        if (collision) {
+            bb_vec[i]->collided = 1;
+            bb_vec2[i]->collided = 1;
+        }
+        else {
+            bb_vec[i]->collided = 0;
+            bb_vec2[i]->collided = 0;
+        }
     }
-    else {
-        bb1->collided = 0;
-        bb2->collided = 0;
-    }
+    
     
     lastPoint = curPoint;
 }
@@ -345,13 +367,17 @@ void Window::display_callback(GLFWwindow* window)
     glUniform3fv(materialID, 1, (GLfloat*) &dirLight_dir );
     
     
-    boat->draw(shaderProgram);
-    boat2->draw(shaderProgram);
+    //boat->draw(shaderProgram);
+    //boat2->draw(shaderProgram);
+    boat_generator->world->draw(shaderProgram);
+    boat_generator2->world->draw(shaderProgram);
     
     if (drawBox) {
         glUseProgram(boxShader);
-        bb1->draw(boxShader);
-        bb2->draw(boxShader);
+        for (int i = 0; i < bb_vec.size(); i++) {
+            bb_vec[i]->draw(boxShader);
+            bb_vec2[i]->draw(boxShader);
+        }
     }
     
 
